@@ -1,1 +1,240 @@
-[{"id":"52996809.ad2118","type":"tab","label":"Flow 1","disabled":false,"info":""},{"id":"7d69bd4c.c32234","type":"slack-rtm-in","z":"52996809.ad2118","client":"f9cf4bb1.0e8448","name":"","events":"","x":220,"y":300,"wires":[["4527ef71.bcfe5"]]},{"id":"4527ef71.bcfe5","type":"function","z":"52996809.ad2118","name":"input-filter","func":"// ignore anything but messages\nif (msg.payload.type != \"message\") {\n    return null;\n}\n// ignore deleted messages\nif (msg.payload.subtype == \"message_deleted\") {\n    return null;\n}\n// ignore me_message\nif (msg.payload.subtype == \"me_message\") {\n    return null;\n}\n// ignore bot_message\nif (msg.payload.subtype == \"bot_message\") {\n    return null;\n}\nmsg.user = {\n    id: msg.payload.user,\n    name: msg.payload.userObject.name\n}\nmsg.text = msg.payload.text\nmsg.channel = msg.payload.channel\nreturn msg;\n","outputs":1,"noerr":0,"initialize":"","finalize":"","x":430,"y":300,"wires":[["571f901f.998b9","abf45592.712c48"]]},{"id":"571f901f.998b9","type":"function","z":"52996809.ad2118","name":"turn on","func":"if (msg.text == 'turn on the light') {\n    return msg;\n}\n","outputs":1,"noerr":0,"initialize":"","finalize":"","x":600,"y":140,"wires":[["f39476da.f4b3b8"]]},{"id":"41214bdf.032af4","type":"http request","z":"52996809.ad2118","name":"","method":"POST","ret":"txt","paytoqs":"ignore","url":"https://maker.ifttt.com/trigger/turn_on/with/key/k2eBdZMHJarTQyE0JwYdJMij7UPPDlYR5cPWhD7b8T8","tls":"","persist":false,"proxy":"","authType":"","x":1050,"y":140,"wires":[["4527ef71.bcfe5"]]},{"id":"b4de1d57.ab675","type":"change","z":"52996809.ad2118","name":"","rules":[{"t":"delete","p":"payload","pt":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":830,"y":140,"wires":[["41214bdf.032af4"]]},{"id":"abf45592.712c48","type":"function","z":"52996809.ad2118","name":"turn off","func":"if (msg.text == 'turn off the light') {\n    return msg;\n}\n","outputs":1,"noerr":0,"initialize":"","finalize":"","x":600,"y":440,"wires":[["232ad3d4.09e10c"]]},{"id":"9673e79b.cf0f58","type":"http request","z":"52996809.ad2118","name":"","method":"POST","ret":"txt","paytoqs":"ignore","url":"https://maker.ifttt.com/trigger/turn_off/with/key/k2eBdZMHJarTQyE0JwYdJMij7UPPDlYR5cPWhD7b8T8","tls":"","persist":false,"proxy":"","authType":"","x":1050,"y":440,"wires":[["4527ef71.bcfe5"]]},{"id":"2cd0fa23.81dc96","type":"change","z":"52996809.ad2118","name":"","rules":[{"t":"delete","p":"payload","pt":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":830,"y":440,"wires":[["9673e79b.cf0f58"]]},{"id":"f39476da.f4b3b8","type":"function","z":"52996809.ad2118","name":"message","func":"msg.topic = \"chat.postMessage\"\nmsg.payload = {\n    channel: msg.channel,\n    text: \"Turning on the bulb!\"\n}\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":620,"y":80,"wires":[["3b5ce101.61731e"]]},{"id":"232ad3d4.09e10c","type":"function","z":"52996809.ad2118","name":"message","func":"msg.topic = \"chat.postMessage\"\nmsg.payload = {\n    channel: msg.channel,\n    text: 'Turning off the bulb!'\n}\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","x":620,"y":500,"wires":[["de17b30f.a6865"]]},{"id":"3b5ce101.61731e","type":"slack-web-out","z":"52996809.ad2118","client":"f9cf4bb1.0e8448","name":"Slack web out","x":800,"y":80,"wires":[["b4de1d57.ab675"]]},{"id":"de17b30f.a6865","type":"slack-web-out","z":"52996809.ad2118","client":"f9cf4bb1.0e8448","name":"Slack web out","x":800,"y":500,"wires":[["2cd0fa23.81dc96"]]},{"id":"f9cf4bb1.0e8448","type":"slack-config","name":"Bot"}]
+[
+  {
+    "id": "52996809.ad2118",
+    "type": "tab",
+    "label": "Flow 1",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "7d69bd4c.c32234",
+    "type": "slack-rtm-in",
+    "z": "52996809.ad2118",
+    "client": "f9cf4bb1.0e8448",
+    "name": "",
+    "events": "",
+    "x": 220,
+    "y": 300,
+    "wires": [
+      [
+        "4527ef71.bcfe5"
+      ]
+    ]
+  },
+  {
+    "id": "4527ef71.bcfe5",
+    "type": "function",
+    "z": "52996809.ad2118",
+    "name": "input-filter",
+    "func": "// ignore anything but messages\nif (msg.payload.type != \"message\") {\n    return null;\n}\n// ignore deleted messages\nif (msg.payload.subtype == \"message_deleted\") {\n    return null;\n}\n// ignore me_message\nif (msg.payload.subtype == \"me_message\") {\n    return null;\n}\n// ignore bot_message\nif (msg.payload.subtype == \"bot_message\") {\n    return null;\n}\nmsg.user = {\n    id: msg.payload.user,\n    name: msg.payload.userObject.name\n}\nmsg.text = msg.payload.text\nmsg.channel = msg.payload.channel\nreturn msg;\n",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 430,
+    "y": 300,
+    "wires": [
+      [
+        "571f901f.998b9",
+        "abf45592.712c48"
+      ]
+    ]
+  },
+  {
+    "id": "571f901f.998b9",
+    "type": "function",
+    "z": "52996809.ad2118",
+    "name": "turn on",
+    "func": "if (msg.text == 'turn on the light') {\n    return msg;\n}\n",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 600,
+    "y": 140,
+    "wires": [
+      [
+        "f39476da.f4b3b8"
+      ]
+    ]
+  },
+  {
+    "id": "41214bdf.032af4",
+    "type": "http request",
+    "z": "52996809.ad2118",
+    "name": "",
+    "method": "POST",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "https://maker.ifttt.com/trigger/turn_on/with/key/k2eBdZMHJarTQyE0JwYdJMij7UPPDlYR5cPWhD7b8T8",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "authType": "",
+    "x": 1050,
+    "y": 140,
+    "wires": [
+      [
+        "4527ef71.bcfe5"
+      ]
+    ]
+  },
+  {
+    "id": "b4de1d57.ab675",
+    "type": "change",
+    "z": "52996809.ad2118",
+    "name": "",
+    "rules": [
+      {
+        "t": "delete",
+        "p": "payload",
+        "pt": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 830,
+    "y": 140,
+    "wires": [
+      [
+        "41214bdf.032af4"
+      ]
+    ]
+  },
+  {
+    "id": "abf45592.712c48",
+    "type": "function",
+    "z": "52996809.ad2118",
+    "name": "turn off",
+    "func": "if (msg.text == 'turn off the light') {\n    return msg;\n}\n",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 600,
+    "y": 440,
+    "wires": [
+      [
+        "232ad3d4.09e10c"
+      ]
+    ]
+  },
+  {
+    "id": "9673e79b.cf0f58",
+    "type": "http request",
+    "z": "52996809.ad2118",
+    "name": "",
+    "method": "POST",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "https://maker.ifttt.com/trigger/turn_off/with/key/k2eBdZMHJarTQyE0JwYdJMij7UPPDlYR5cPWhD7b8T8",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "authType": "",
+    "x": 1050,
+    "y": 440,
+    "wires": [
+      [
+        "4527ef71.bcfe5"
+      ]
+    ]
+  },
+  {
+    "id": "2cd0fa23.81dc96",
+    "type": "change",
+    "z": "52996809.ad2118",
+    "name": "",
+    "rules": [
+      {
+        "t": "delete",
+        "p": "payload",
+        "pt": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 830,
+    "y": 440,
+    "wires": [
+      [
+        "9673e79b.cf0f58"
+      ]
+    ]
+  },
+  {
+    "id": "f39476da.f4b3b8",
+    "type": "function",
+    "z": "52996809.ad2118",
+    "name": "message",
+    "func": "msg.topic = \"chat.postMessage\"\nmsg.payload = {\n    channel: msg.channel,\n    text: \"Turning on the bulb!\"\n}\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 620,
+    "y": 80,
+    "wires": [
+      [
+        "3b5ce101.61731e"
+      ]
+    ]
+  },
+  {
+    "id": "232ad3d4.09e10c",
+    "type": "function",
+    "z": "52996809.ad2118",
+    "name": "message",
+    "func": "msg.topic = \"chat.postMessage\"\nmsg.payload = {\n    channel: msg.channel,\n    text: 'Turning off the bulb!'\n}\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 620,
+    "y": 500,
+    "wires": [
+      [
+        "de17b30f.a6865"
+      ]
+    ]
+  },
+  {
+    "id": "3b5ce101.61731e",
+    "type": "slack-web-out",
+    "z": "52996809.ad2118",
+    "client": "f9cf4bb1.0e8448",
+    "name": "Slack web out",
+    "x": 800,
+    "y": 80,
+    "wires": [
+      [
+        "b4de1d57.ab675"
+      ]
+    ]
+  },
+  {
+    "id": "de17b30f.a6865",
+    "type": "slack-web-out",
+    "z": "52996809.ad2118",
+    "client": "f9cf4bb1.0e8448",
+    "name": "Slack web out",
+    "x": 800,
+    "y": 500,
+    "wires": [
+      [
+        "2cd0fa23.81dc96"
+      ]
+    ]
+  },
+  {
+    "id": "f9cf4bb1.0e8448",
+    "type": "slack-config",
+    "name": "Bot"
+  }
+]
